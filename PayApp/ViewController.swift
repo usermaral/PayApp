@@ -34,6 +34,24 @@ class ViewController: UIViewController {
         return image
     }()
     
+    private lazy var payButton: UIButton = {
+        let button = UIButton(primaryAction: payButtonAction)
+        button.setTitle("Қолдау", for: .normal)
+        button.setTitleColor(.white, for: .normal)
+        button.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .bold)
+        button.layer.cornerRadius = 20
+        button.backgroundColor = UIColor(named: "Blue")
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.heightAnchor.constraint(equalToConstant: 51).isActive = true
+        
+        
+        return button
+    }()
+    
+    private lazy var payButtonAction = UIAction { _ in
+        print(1)
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = UIColor(named: "Main")
@@ -41,6 +59,7 @@ class ViewController: UIViewController {
         setImage()
         setText()
         setVariants()
+        setButton()
     }
     
     private func setCircle() {
@@ -98,6 +117,16 @@ class ViewController: UIViewController {
             hStack.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20)
         ])
         
+    }
+    
+    private func setButton() {
+        view.addSubview(payButton)
+        
+        NSLayoutConstraint.activate([
+            payButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
+            payButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
+            payButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -12)
+        ])
     }
     
     private func createPayVariant(variant: PayVariant) -> UIView {
