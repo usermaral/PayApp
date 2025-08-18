@@ -7,6 +7,12 @@
 
 import UIKit
 
+enum PayVariant: Int, CaseIterable {
+    case small = 200
+    case middle = 400
+    case big = 600
+}
+
 class ViewController: UIViewController {
     
     private lazy var textStack: UIStackView = {
@@ -34,6 +40,7 @@ class ViewController: UIViewController {
         setCircle()
         setImage()
         setText()
+        setVariants()
     }
     
     private func setCircle() {
@@ -69,6 +76,71 @@ class ViewController: UIViewController {
             textStack.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
             textStack.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20)
         ])
+    }
+    
+    private func setVariants() {
+        let hStack = UIStackView()
+        hStack.axis = .horizontal
+        hStack.spacing = 0
+        hStack.distribution = .equalSpacing
+        hStack.alignment = .center
+        hStack.translatesAutoresizingMaskIntoConstraints = false
+        
+        view.addSubview(hStack)
+        
+        PayVariant.allCases.forEach { variant in
+            hStack.addArrangedSubview(createPayVariant(variant: variant))
+        }
+        
+        NSLayoutConstraint.activate([
+            hStack.topAnchor.constraint(equalTo: textStack.bottomAnchor, constant: 60),
+            hStack.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
+            hStack.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20)
+        ])
+        
+    }
+    
+    private func createPayVariant(variant: PayVariant) -> UIView {
+        let payView = UIView()
+        payView.translatesAutoresizingMaskIntoConstraints = false
+        payView.widthAnchor.constraint(equalToConstant: 100).isActive = true
+        payView.heightAnchor.constraint(equalToConstant: 100).isActive = true
+        payView.layer.cornerRadius = 20
+        payView.tag = variant.rawValue
+        
+        switch variant {
+        case .small:
+            payView.backgroundColor = UIColor(named: "Yellow")
+            payView.layer.borderWidth = 3
+            payView.layer.borderColor = UIColor.white.cgColor
+        case .middle:
+            payView.backgroundColor = UIColor(named: "Pink")
+        case .big:
+            payView.backgroundColor = UIColor(named: "Blue")
+        }
+        
+        let vStack = UIStackView()
+        vStack.axis = .vertical
+        vStack.spacing = 0
+        vStack.alignment = .center
+        vStack.translatesAutoresizingMaskIntoConstraints = false
+        
+        let sumLabel = createLabel(size: 31, weight: .bold, text: "\(variant.rawValue)")
+        let sumDescription = createLabel(size: 16, weight: .light, text: "теңге")
+        
+        vStack.addArrangedSubview(sumLabel)
+        vStack.addArrangedSubview(sumDescription)
+        
+        payView.addSubview(vStack)
+        
+        NSLayoutConstraint.activate([
+            vStack.topAnchor.constraint(equalTo: payView.topAnchor, constant: 23),
+            vStack.bottomAnchor.constraint(equalTo: payView.bottomAnchor, constant: -23),
+            vStack.leadingAnchor.constraint(equalTo: payView.leadingAnchor, constant: 10),
+            vStack.trailingAnchor.constraint(equalTo: payView.trailingAnchor, constant: -10),
+        ])
+        
+        return payView
     }
     
     private func createCircle(frame: CGRect) -> UIView {
