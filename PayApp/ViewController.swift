@@ -9,10 +9,21 @@ import UIKit
 
 class ViewController: UIViewController {
 
+    private lazy var image: UIImageView = {
+        let image = UIImageView()
+        image.image = UIImage(named: "img1")
+        image.contentMode = .scaleToFill
+        image.translatesAutoresizingMaskIntoConstraints = false
+        image.heightAnchor.constraint(equalToConstant: view.frame.height / 3).isActive = true
+        image.widthAnchor.constraint(equalToConstant: view.frame.height / 3).isActive = true
+        return image
+    }()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = UIColor(named: "Main")
         setCircle()
+        setImage()
     }
     
     private func setCircle() {
@@ -26,6 +37,12 @@ class ViewController: UIViewController {
         [circle1, circle2, circle3, circle4, circle5, circle6].forEach { item in
             view.addSubview(item)
         }
+    }
+    
+    private func setImage() {
+        view.addSubview(image)
+        image.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 50).isActive = true
+        image.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
     }
     
     private func createCircle(frame: CGRect) -> UIView {
