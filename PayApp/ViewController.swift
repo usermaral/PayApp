@@ -49,8 +49,10 @@ class ViewController: UIViewController {
     }()
     
     private lazy var payButtonAction = UIAction { _ in
-        print(1)
+        print(self.selectPrice)
     }
+    
+    private var selectPrice = 100
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -125,17 +127,37 @@ class ViewController: UIViewController {
         NSLayoutConstraint.activate([
             payButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
             payButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
-            payButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -12)
+            payButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -20)
         ])
     }
     
+    @objc func selectVariant(sender: UIGestureRecognizer) {
+        PayVariant.allCases.forEach { variant in
+            if let sView = self.view.viewWithTag(variant.rawValue) {
+                sView.layer.borderWidth = 0
+                sView.layer.borderColor = .none
+            }
+            
+            if let selectTag = sender.view?.tag {
+                if let selectedView = self.view.viewWithTag(selectTag) {
+                    selectedView.layer.borderWidth = 3
+                    selectedView.layer.borderColor = UIColor.white.cgColor
+                    self.selectPrice = selectTag
+                }
+            }
+        }
+    }
+    
     private func createPayVariant(variant: PayVariant) -> UIView {
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(selectVariant(sender: )))
+        
         let payView = UIView()
         payView.translatesAutoresizingMaskIntoConstraints = false
         payView.widthAnchor.constraint(equalToConstant: 100).isActive = true
         payView.heightAnchor.constraint(equalToConstant: 100).isActive = true
         payView.layer.cornerRadius = 20
         payView.tag = variant.rawValue
+        payView.addGestureRecognizer(tapGesture)
         
         switch variant {
         case .small:
