@@ -8,6 +8,15 @@
 import UIKit
 
 class ViewController: UIViewController {
+    
+    private lazy var textStack: UIStackView = {
+        let stack = UIStackView()
+        stack.axis = .vertical
+        stack.spacing = 10
+        stack.alignment = .leading
+        stack.translatesAutoresizingMaskIntoConstraints = false
+        return stack
+    }()
 
     private lazy var image: UIImageView = {
         let image = UIImageView()
@@ -24,6 +33,7 @@ class ViewController: UIViewController {
         view.backgroundColor = UIColor(named: "Main")
         setCircle()
         setImage()
+        setText()
     }
     
     private func setCircle() {
@@ -45,6 +55,22 @@ class ViewController: UIViewController {
         image.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
     }
     
+    private func setText() {
+        view.addSubview(textStack)
+        
+        let pageTitle = createLabel(size: 27, weight: .bold, text: "Қосымша және оның барлық қызметтері тегін")
+        let pageSubtitle = createLabel(size: 16, weight: .regular, text: "барлық қаражат жобаны жақсартуға және қолдауға жұмсалады")
+        
+        textStack.addArrangedSubview(pageTitle)
+        textStack.addArrangedSubview(pageSubtitle)
+        
+        NSLayoutConstraint.activate([
+            textStack.topAnchor.constraint(equalTo: image.bottomAnchor, constant: 25),
+            textStack.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
+            textStack.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20)
+        ])
+    }
+    
     private func createCircle(frame: CGRect) -> UIView {
         let circle = UIView()
         circle.backgroundColor = UIColor(named: "Circle")
@@ -53,6 +79,16 @@ class ViewController: UIViewController {
         return circle
     }
 
+    private func createLabel(size: CGFloat, weight: UIFont.Weight, text: String) -> UILabel {
+        let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.text = text
+        label.numberOfLines = 0
+        label.textColor = .black
+        label.font = UIFont.systemFont(ofSize: size, weight: weight)
+        
+        return label
+    }
 
 }
 
