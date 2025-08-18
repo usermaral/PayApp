@@ -10,5 +10,5 @@ The user can choose a variant of the amount and tap the pay button.
 
 ## Скриншот / Screenshot
 
-![App Screenshot](screenshot.png)
+<img src="screenshot.png" alt="App Screenshot" width="300">
 
